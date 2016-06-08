@@ -1,6 +1,10 @@
+###################################################
+#########     Análisis tweets CouchDB     #########
+###################################################
 
 install.packages('R4CouchDB', dependencies = TRUE)
 library(R4CouchDB)
+ls("package:R4CouchDB")
 
 # Ping
 fromJSON(getURLContent("http://localhost:5984"))
