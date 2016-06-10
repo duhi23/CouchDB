@@ -58,12 +58,42 @@ data <- data.frame(fecha=fecha, ciudad=info[,2], pais=info[,3], gutierres=as.num
 data %>% filter(gutierres != 999) %>% select(fecha, gutierres) %>% table() %>% as.data.frame() %>% 
       ggvis(x = ~gutierres, y = ~Freq) %>% layer_bars()
 
+# Gutierrez
 gdata <- data %>% filter(gutierres != 999) %>% select(fecha, gutierres) %>% table() %>% as.data.frame()
+ggplot(gdata, aes(x=fecha, y=Freq, fill=gutierres)) + geom_bar(stat="identity")
+ggplot(gdata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(gutierres ~ .)
 
-ggplot(gdata, aes(x=fecha, y=Freq)) + 
+# Noboa
+ndata <- data %>% filter(noboa != 999) %>% select(fecha, noboa) %>% table() %>% as.data.frame()
+ggplot(ndata, aes(x=fecha, y=Freq, fill=noboa)) + geom_bar(stat="identity")
+ggplot(ndata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(noboa ~ .)
 
-autoplot(ts(round(c(info[,4], est4-9),0), start = c(2006,1), frequency = 12)) +
-      geom_vline(aes(xintercept = as.numeric(as.Date("2016-04-01"))), colour = 'red', linetype = 'longdash')
+# Gonzalez
+zdata <- data %>% filter(gonzalez != 999) %>% select(fecha, gonzalez) %>% table() %>% as.data.frame()
+ggplot(zdata, aes(x=fecha, y=Freq, fill=gonzalez)) + geom_bar(stat="identity")
+ggplot(zdata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(gonzalez ~ .)
 
-data %>% table()
+# Correa
+cdata <- data %>% filter(correa != 999) %>% select(fecha, correa) %>% table() %>% as.data.frame()
+ggplot(cdata, aes(x=fecha, y=Freq, fill=correa)) + geom_bar(stat="identity")
+ggplot(cdata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(correa ~ .)
 
+# Tiban
+tdata <- data %>% filter(tiban != 999) %>% select(fecha, tiban) %>% table() %>% as.data.frame()
+ggplot(tdata, aes(x=fecha, y=Freq, fill=tiban)) + geom_bar(stat="identity")
+ggplot(tdata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(tiban ~ .)
+
+# Glass
+sdata <- data %>% filter(glass != 999) %>% select(fecha, glass) %>% table() %>% as.data.frame()
+ggplot(sdata, aes(x=fecha, y=Freq, fill=glass)) + geom_bar(stat="identity")
+ggplot(sdata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(glass ~ .)
+
+# Rodas
+ddata <- data %>% filter(rodas != 999) %>% select(fecha, rodas) %>% table() %>% as.data.frame()
+ggplot(ddata, aes(x=fecha, y=Freq, fill=rodas)) + geom_bar(stat="identity")
+ggplot(ddata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(rodas ~ .)
+
+# Lasso
+adata <- data %>% filter(lasso != 999) %>% select(fecha, lasso) %>% table() %>% as.data.frame()
+ggplot(adata, aes(x=fecha, y=Freq, fill=lasso)) + geom_bar(stat="identity")
+ggplot(adata, aes(x=fecha, y=Freq)) + geom_bar(stat="identity") + facet_grid(lasso ~ .)
