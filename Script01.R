@@ -11,7 +11,6 @@ ls("package:R4CouchDB")
 # Ping
 fromJSON(getURLContent("http://localhost:5984"))
 
-
 # Listamos los documentos locales
 index <- fromJSON(httpGET("http://localhost:5984/tweets_corregido/_all_docs"))$rows
 str(index)
