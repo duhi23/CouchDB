@@ -2,6 +2,7 @@
 #########     Análisis tweets CouchDB     #########
 ###################################################
 
+# Librerias para la conexión a CouchDB
 install.packages('R4CouchDB', dependencies = TRUE)
 library(R4CouchDB)
 library(plyr)
@@ -10,15 +11,8 @@ ls("package:R4CouchDB")
 # Ping
 fromJSON(getURLContent("http://localhost:5984"))
 
-# Creamos base
-httpPUT("http://localhost:5984/base")
 
-# Enviamos objetos de R a CouchDB
-jfit <- toJSON(rnorm(10))
-fromJSON(httpPUT("http://localhost:5984/base/fit", jfit))
-
-
-# Listamos los documentos
+# Listamos los documentos locales
 index <- fromJSON(httpGET("http://localhost:5984/tweets_corregido/_all_docs"))$rows
 str(index)
 
@@ -26,37 +20,36 @@ str(index)
 cdb <- cdbIni()
 cdb$DBName <- "tweets_corregido"
 
-# Obtenemos los documentos por medio de su "id"
-
+# Obtenemos los documentos por medio de su "id", unicamente las variables de interés
 reg <- function(i){
       cdb$id <- index[[i]]$id;
       return(unlist(cdbGetDoc(cdb)$res[c(8,9,16,3,5,6,7,10,11,12,15,17)]))
 }
 
+# Consolidamos los tweets en una tabla
 info <- reg(1)
 for(i in 2:22799){
       info <- rbind(info, reg(i))      
 }
 
+# Revisamos la nueva estructura y dimensiones
 str(info)
 dim(info)
 
-# Formato variables
+# Cargamos librerias para la visualización
 library(ggvis)
 library(dplyr)
 library(ggplot2)
 library(ggfortify)
 
+# Damos formato a la variable fecha
 fecha <- as.Date(info[,1], format="%a %b %d %H:%M:%S %z %Y")
 
+# Consolidamos la tabla final
 data <- data.frame(fecha=fecha, ciudad=info[,2], pais=info[,3], gutierres=as.numeric(info[,4]),
                    noboa=as.numeric(info[,5]), gonzalez=as.numeric(info[,6]), correa=as.numeric(info[,7]),
                    tiban=as.numeric(info[,8]), glass=as.numeric(info[,9]), rodas=as.numeric(info[,10]),
                    lasso=as.numeric(info[,11]))
-
-
-data %>% filter(gutierres != 999) %>% select(fecha, gutierres) %>% table() %>% as.data.frame() %>% 
-      ggvis(x = ~gutierres, y = ~Freq) %>% layer_bars()
 
 # Gutierrez
 gdata <- data %>% filter(gutierres != 999) %>% select(fecha, gutierres) %>% table() %>% as.data.frame()
